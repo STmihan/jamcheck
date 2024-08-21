@@ -13,7 +13,16 @@
 <div class="container">
     <div class="form-container">
         <label for="game-id">Enter Game ID:</label>
-        <input type="text" id="game-id" name="game-id" placeholder="Game ID">
+        <div class="input-with-icon">
+            <input type="text" id="game-id" name="game-id" placeholder="Game ID">
+            <button type="button" class="info-icon" onclick="togglePopup()">
+                <img src="question-mark-inside-a-circle-svgrepo-com.svg" alt="Info" width="38" height="38">
+            </button>
+            <div class="screenshot-popup" id="screenshot-popup">
+                <img src="screenshot.jpg" alt="Screenshot">
+                <button class="close-popup" onclick="togglePopup()">×</button>
+            </div>
+        </div>
         <button class="blue" type="button" onclick="loadGame()">Load Game</button>
         <button id="update-btn" class="red" type="button" onclick="updateList()">Update Game list</button>
     </div>
@@ -69,6 +78,25 @@
             window.location.reload();
         });
     }
+    
+    function togglePopup() {
+        const popup = document.querySelector('#screenshot-popup');
+        const overlay = document.createElement('div');
+        overlay.className = 'popup-overlay';
+        overlay.id = 'popup-overlay';
+        console.log(popup.style.display);
+
+        if (popup.style.display === 'block') {
+            popup.style.display = 'none';
+            document.body.removeChild(document.querySelector('.popup-overlay'));
+        } else {
+            popup.style.display = 'block';
+            document.body.appendChild(overlay);
+            overlay.style.display = 'block';
+            overlay.addEventListener('click', togglePopup);
+        }
+    }
+
 </script>
 </body>
 </html>
