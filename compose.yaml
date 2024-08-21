@@ -1,0 +1,7 @@
+services:
+  web:
+    build: .
+    environment:
+      - PORT=6060
+    ports:
+      - "6060:6060"

@@ -1,6 +1,7 @@
 ﻿import express from 'express';
 import {homeController, infoController, updateController} from "./controllers";
 import path from "node:path";
+import {update} from "../domain/services";
 
 const app = express();
 const port = process.env.PORT || 6060;
@@ -14,6 +15,8 @@ app.get('/update', updateController);
 app.get('/:id', infoController);
 
 
-app.listen(port, () => {
-    console.log(`Server is running on http://localhost:${port}`);
+app.listen(port, async () => {
+    console.log(`Server is running on port:${port}`);
+    await update();
+    console.log('Data updated');
 });
