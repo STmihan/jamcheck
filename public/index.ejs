@@ -1,0 +1,74 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GMTK Game Jam 2024</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="header">GMTK Game Jam 2024</div>
+
+<div class="container">
+    <div class="form-container">
+        <label for="game-id">Enter Game ID:</label>
+        <input type="text" id="game-id" name="game-id" placeholder="Game ID">
+        <button class="blue" type="button" onclick="loadGame()">Load Game</button>
+        <button id="update-btn" class="red" type="button" onclick="updateList()">Update Game list</button>
+    </div>
+
+    <div class="game-container">
+        <img src="<%= record.game.cover %>" alt="Game Cover" class="game-cover">
+        <h1 class="game-title"><%= record.game.title %></h1>
+        <p class="game-short-text"><%= record.game.short_text %></p>
+
+        <div class="platforms">
+            <strong>Platforms:</strong>
+            <% record.game.platforms.forEach(function(platform) { %>
+                <span><%= platform %></span>
+            <% }); %>
+        </div>
+
+        <div class="contributors">
+            <strong>Contributors:</strong>
+            <% record.contributors.forEach(function(contributor) { %>
+                <span><a href="<%= contributor.url %>"><%= contributor.name %></a></span>
+            <% }); %>
+        </div>
+
+        <div class="stats-container">
+            <div class="stats">
+                <strong>Rating Count:</strong> <span><%= record.rating_count %></span><br>
+                <strong>Coolness:</strong> <span><%= record.coolness %></span><br>
+                <strong>Place by Coolness:</strong>
+                <span><%= record.place.by_coolness %> / <%= record.place.total %></span><br>
+                <strong>Place by Ratings Count:</strong>
+                <span><%= record.place.by_ratings_count %> / <%= record.place.total %></span>
+            </div>
+            <div class="iframe-container">
+                <iframe src="https://itch.io/embed/<%= record.game.id %>?border_width=0" width="206"
+                        height="165"></iframe>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    function loadGame() {
+        const gameId = document.getElementById('game-id').value;
+        window.location.href = `/${gameId}`;
+    }
+
+    function updateList() {
+        console.log('Updating list...');
+        const button = document.querySelector('#update-btn');
+        button.disabled = true;
+        fetch('/update').finally(() => {
+            button.disabled = false;
+            alert('Game list updated!');
+            window.location.reload();
+        });
+    }
+</script>
+</body>
+</html>
