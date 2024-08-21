@@ -35,7 +35,7 @@ export function calculatePlaceData(record: Record, batch: Batch): Place {
     const sortedByCoolness = batch.jam_games.slice().sort((a, b) => b.coolness - a.coolness);
     place.by_coolness = sortedByCoolness.findIndex((r) => r.id === record.id) + 1;
 
-    const sortedByRatingsCount = batch.jam_games.slice().sort((a, b) => b.ratings_count - a.ratings_count);
+    const sortedByRatingsCount = batch.jam_games.slice().sort((a, b) => a.ratings_count - b.ratings_count);
     place.by_ratings_count = sortedByRatingsCount.findIndex((r) => r.id === record.id) + 1;
 
     return place;

@@ -9,9 +9,7 @@ export async function homeController(req: Request, res: Response) {
 export async function updateController(req: Request, res: Response) {
     try {
         console.log('Updating data...');
-        // await update();
-        // delay
-        await new Promise(resolve => setTimeout(resolve, 5000));
+        await update();
         return res.send('Data updated');
     } catch (error) {
         return res.render('error', {error: (error as Error).message});
