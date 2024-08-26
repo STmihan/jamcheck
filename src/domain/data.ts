@@ -10,7 +10,7 @@ export interface Record {
     id: number;
     created_at: string;
     coolness: number;
-    ratings_count: number;
+    rating_count: number;
     url: string;
     place: Place | null;
     game: Game;

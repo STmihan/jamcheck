@@ -1,5 +1,6 @@
 ﻿import {Batch, Place, Record} from "./data";
 import fs from "fs";
+import fetch from "node-fetch";
 
 export function readData(id: string): Promise<Batch> {
     return new Promise((resolve, reject) => {
@@ -20,7 +21,7 @@ export function readData(id: string): Promise<Batch> {
 
 export async function fetchData(id: string, url: string): Promise<Batch> {
     const response = await fetch(url.replace("{}", id));
-    const data = await response.json();
+    const data: Batch = await response.json() as Batch;
     processBatch(data);
     return data;
 }
@@ -32,11 +33,15 @@ export function calculatePlaceData(record: Record, batch: Batch): Place {
         total: batch.jam_games.length,
     };
 
-    const sortedByCoolness = batch.jam_games.slice().sort((a, b) => b.coolness - a.coolness);
-    place.by_coolness = sortedByCoolness.findIndex((r) => r.id === record.id) + 1;
+    batch.jam_games = batch.jam_games.sort(function (a, b) {
+        return b.coolness - a.coolness;
+    });
+    place.by_coolness = batch.jam_games.findIndex((r) => r.id === record.id) + 1;
 
-    const sortedByRatingsCount = batch.jam_games.slice().sort((a, b) => a.ratings_count - b.ratings_count);
-    place.by_ratings_count = sortedByRatingsCount.findIndex((r) => r.id === record.id) + 1;
+    batch.jam_games = batch.jam_games.sort(function (a, b) {
+        return b.rating_count - a.rating_count;
+    });
+    place.by_ratings_count = batch.jam_games.findIndex((r) => r.id === record.id) + 1;
 
     return place;
 }
